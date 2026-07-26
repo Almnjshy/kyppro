@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Mechanical Keyboard Pro</string>
+    <string name="main_activity_title">تفعيل لوحة المفاتيح</string>
+    <string name="step_1">1. اضغط على الزر أدناه لفتح إعدادات لوحات المفاتيح.</string>
+    <string name="step_2">2. فعّل \"Mechanical Keyboard Pro\" من القائمة.</string>
+    <string name="step_3">3. عد إلى أي تطبيق واضغط مطولًا على أيقونة لوحة المفاتيح لاختيارها، أو اضغط على الزر الثاني هنا لفتح منتقي لوحة المفاتيح مباشرة.</string>
+    <string name="btn_open_ime_settings">فتح إعدادات لوحات المفاتيح</string>
+    <string name="btn_pick_ime">اختيار لوحة المفاتيح الآن</string>
+    <string name="settings_title">تخصيص لوحة المفاتيح</string>
+</resources>

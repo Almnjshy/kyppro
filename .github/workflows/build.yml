@@ -1,0 +1,59 @@
+name: Build APK
+
+on:
+  push:
+    branches: [ "main", "master" ]
+  pull_request:
+    branches: [ "main", "master" ]
+  workflow_dispatch: {}
+
+jobs:
+  build:
+    name: Assemble debug + release APKs
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v3
+        with:
+          packages: "platform-tools platforms;android-35 build-tools;35.0.0"
+
+      # No gradle-wrapper.jar is committed to this repo (it's a binary file
+      # and this project was authored without network/JDK access to
+      # generate it). This action provisions Gradle directly instead, so
+      # `gradlew` is not required. If you later run `gradle wrapper`
+      # locally and commit the wrapper, you can switch the run steps below
+      # from `gradle` to `./gradlew` and drop this action's `gradle-version`.
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: "8.7"
+
+      - name: Assemble debug APK
+        run: gradle :app:assembleDebug --stacktrace
+
+      - name: Assemble release APK (unsigned)
+        run: gradle :app:assembleRelease --stacktrace
+
+      - name: Upload debug APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: MechanicalKeyboardPro-debug
+          path: app/build/outputs/apk/debug/*.apk
+          if-no-files-found: error
+
+      - name: Upload release APK (unsigned)
+        uses: actions/upload-artifact@v4
+        with:
+          name: MechanicalKeyboardPro-release-unsigned
+          path: app/build/outputs/apk/release/*.apk
+          if-no-files-found: error
